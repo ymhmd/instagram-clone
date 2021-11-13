@@ -91,7 +91,8 @@ export const PostHeadrComponent = ({
   postUserId,
   onClickLikes,
 }: Props) => {
-  const { isLiked, toggleLike } = useLike(likedByMe);
+  const { isLiked, toggleLike, likesCount } = useLike(likedByMe, numberOfLikes);
+
   let previousTap: number | null = null;
 
   const userInfo = useSelector(userInfoSelector);
@@ -158,11 +159,11 @@ export const PostHeadrComponent = ({
         )}
       </TouchableOpacity>
 
-      {numberOfLikes > 0 && (
+      {likesCount > 0 && (
         <Text
           onPress={() => onClickLikes(postId)}
           style={styles.handleName}
-        >{`${String(numberOfLikes)} likes`}</Text>
+        >{`${String(likesCount)} likes`}</Text>
       )}
       <View style={styles.captionView}>
         <Text
