@@ -1,25 +1,87 @@
-import React, { useState } from "react";
-import { View, TouchableOpacity, StyleSheet } from "react-native";
+import React, { useEffect, useState } from "react";
+import {
+  View,
+  TouchableOpacity,
+  StyleSheet,
+  Dimensions,
+  Platform,
+} from "react-native";
 import { Camera } from "expo-camera";
 import { useIsFocused } from "@react-navigation/native";
 import { useNavigation } from "@react-navigation/native";
+import { Loader } from "../../components/common";
 
 export const LiveCamera = () => {
   const navigation = useNavigation();
   const isFocused = useIsFocused();
 
-  const [cameraRef, setCameraRef] = useState<any>(null);
+  const [camera, setCamera] = useState(null);
+  const [isRatioSet, setIsRatioSet] = useState<boolean>(false);
+  const [imagePadding, setImagePadding] = useState(0);
+  const [ratio, setRatio] = useState<string>("4:3");
+
+  const { height, width } = Dimensions.get("window");
+  const screenRatio = height / width;
+
+  useEffect(() => {
+    prepareRatio();
+  }, [isFocused, imagePadding, ratio, setRatio]);
+
+  const prepareRatio = async () => {
+    let desiredRatio = "4:3";
+    try {
+      if (Platform.OS === "android" && camera) {
+        const ratios = await camera.getSupportedRatiosAsync();
+
+        let distances: any = {};
+        let realRatios: any = {};
+        let minDistance = null;
+
+        for (const ratio of ratios) {
+          const parts = ratio.split(":");
+          const realRatio = parseInt(parts[0]) / parseInt(parts[1]);
+          realRatios[ratio] = realRatio;
+          const distance = screenRatio - realRatio;
+          distances[ratio] = realRatio;
+          if (minDistance == null) {
+            minDistance = ratio;
+          } else {
+            if (distance >= 0 && distance < distances[minDistance]) {
+              minDistance = ratio;
+            }
+          }
+        }
+
+        // set the best match
+        desiredRatio = minDistance;
+        const remainder = Math.floor(
+          (height - realRatios[desiredRatio] * width) / 2
+        );
+
+        // set the preview padding and preview ratio
+        setImagePadding(remainder / 2);
+        setRatio(desiredRatio);
+        setIsRatioSet(true);
+      }
+    } catch (error) {
+      console.error("Error while preparing aspect ratio", error);
+    }
+  };
+
+  const setCameraReady = async () => {
+    if (!isRatioSet) {
+      await prepareRatio();
+    }
+  };
 
   const onClickCapture = async () => {
-    if (cameraRef) {
-      const options = {
-        quality: 0.5,
-        base64: false,
-      };
-      const data = await cameraRef.takePictureAsync(options);
+    if (camera) {
+      const options = { quality: 0.5, base64: true };
+      const data = await camera.takePictureAsync(options);
 
       navigation.navigate("CameraPreview", {
         imageData: data,
+        extraSpace: imagePadding * 2,
       });
     }
   };
@@ -27,17 +89,21 @@ export const LiveCamera = () => {
   return isFocused ? (
     <View style={styles.mainContainer}>
       <Camera
+        style={[
+          styles.cameraPreview,
+          { marginTop: imagePadding, marginBottom: imagePadding },
+        ]}
+        onCameraReady={setCameraReady}
+        ratio={ratio}
         ref={(ref) => {
-          setCameraRef(ref);
+          setCamera(ref);
         }}
-        style={styles.camera}
-        type={Camera.Constants.Type.back}
-        autoFocus={Camera.Constants.AutoFocus.on}
+        autoFocus={true}
       />
       <TouchableOpacity style={styles.button} onPress={onClickCapture} />
     </View>
   ) : (
-    <View />
+    <Loader />
   );
 };
 
@@ -49,12 +115,9 @@ const styles = StyleSheet.create({
     width: "100%",
     height: "100%",
   },
-  camera: {
+  cameraPreview: {
     flex: 1,
     width: "100%",
-    height: "100%",
-    alignItems: "center",
-    justifyContent: "flex-end",
   },
   button: {
     position: "absolute",
@@ -64,5 +127,11 @@ const styles = StyleSheet.create({
     borderRadius: 35,
     alignSelf: "center",
     backgroundColor: "#DEFEEE",
+  },
+  information: {
+    flex: 1,
+    justifyContent: "center",
+    alignContent: "center",
+    alignItems: "center",
   },
 });

@@ -1,2 +1,2 @@
-export * from './camera-preview';
-export * from './live-camera';
+export * from "./camera-preview";
+export * from "./live-camera";
