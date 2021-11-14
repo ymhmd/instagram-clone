@@ -4,6 +4,7 @@ import { UploadImageComponent } from "../../components/upload";
 import { useUploadImage } from "../../hooks/useUploadImage";
 import { userInfoRequest, userInfoSelector } from "../../redux/user";
 import { useNavigation, useRoute } from "@react-navigation/native";
+import { ScreenNames } from "../../utils";
 
 export const UploadImage = () => {
   const dispatch = useDispatch();
@@ -22,7 +23,8 @@ export const UploadImage = () => {
     uploadImage(imageToUpload, captionText, userId);
 
     dispatch(userInfoRequest());
-    navigation.navigate("Home");
+    navigation.pop();
+    navigation.navigate(ScreenNames.home);
   };
 
   return (

@@ -1,16 +1,17 @@
-import React, {useEffect, useState} from 'react';
-import {RefreshControl, ScrollView} from 'react-native';
-import {SafeAreaView} from 'react-native-safe-area-context';
-import {useDispatch, useSelector} from 'react-redux';
-import {Loader} from '../../components/common';
-import {PostHeadrComponent} from '../../components/home';
+import React, { useEffect, useState } from "react";
+import { RefreshControl, ScrollView } from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
+import { useDispatch, useSelector } from "react-redux";
+import { Loader } from "../../components/common";
+import { PostHeadrComponent } from "../../components/home";
 import {
   HomePostInfo,
   homePostsBasicInfoSelector,
   homePostsRequest,
-} from '../../redux/posts';
-import {userInfoSelector, setUserId, userInfoRequest} from '../../redux/user';
-import {useNavigation} from '@react-navigation/native';
+} from "../../redux/posts";
+import { userInfoSelector, setUserId, userInfoRequest } from "../../redux/user";
+import { useNavigation } from "@react-navigation/native";
+import { ScreenNames } from "../../utils";
 
 export const Home = () => {
   const [refreshing, setRefreshing] = useState<boolean>(false);
@@ -19,14 +20,14 @@ export const Home = () => {
   const navigation = useNavigation();
 
   const homePosts: HomePostInfo[] | undefined = useSelector(
-    homePostsBasicInfoSelector,
+    homePostsBasicInfoSelector
   );
 
   const userInfo = useSelector(userInfoSelector);
 
   useEffect(() => {
     //TODO: user id should be passed after login
-    dispatch(setUserId({id: '6183daaaf68ad85e8e10d7da'}));
+    dispatch(setUserId({ id: "6183daaaf68ad85e8e10d7da" }));
     dispatch(userInfoRequest());
     dispatch(homePostsRequest());
   }, []);
@@ -38,7 +39,7 @@ export const Home = () => {
   };
 
   const handleOnClickLikes = (postId: string) => {
-    navigation.navigate('PostLikeListScreen', {
+    navigation.navigate(ScreenNames.postLikeListScreen, {
       postId,
     });
   };
@@ -48,8 +49,9 @@ export const Home = () => {
       <ScrollView
         refreshControl={
           <RefreshControl refreshing={refreshing} onRefresh={handleOnRefresh} />
-        }>
-        {homePosts.map(post => (
+        }
+      >
+        {homePosts.map((post) => (
           <PostHeadrComponent
             key={post._id}
             postId={post._id}

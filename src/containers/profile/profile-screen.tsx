@@ -40,16 +40,20 @@ export const Profile = () => {
   //Placeholder for arrow function
   const handleOnClick = () => {};
 
+  const dipatchAllUserInfo = () => {
+    dispatch(userInfoRequest());
+    dispatch(userPostsRequest());
+  };
+
   useEffect(() => {
     //TODO: find long term solution for this warning
     LogBox.ignoreLogs(["VirtualizedLists should never be nested"]);
-    dispatch(userInfoRequest());
-    dispatch(userPostsRequest());
+    dipatchAllUserInfo();
   }, []);
 
   const handleOnRefresh = () => {
     setRefreshing(true);
-    dispatch(userInfoRequest());
+    dipatchAllUserInfo();
     setRefreshing(false);
   };
 
