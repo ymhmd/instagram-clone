@@ -17,8 +17,6 @@ export const UserHeader = ({ profileHandle, isMyProfile }: Props) => {
   const handleOnClickAddPost = async () => {
     const image = await selecImage();
 
-    console.log("image", image);
-
     if (image) {
       navigation.navigate(ScreenNames.uploadImage, {
         imageToUpload: image,

@@ -64,7 +64,7 @@ export const LiveCamera = () => {
         setIsRatioSet(true);
       }
     } catch (error) {
-      console.error("Error while preparing aspect ratio", error);
+      console.log("Error while preparing aspect ratio", error);
     }
   };
 

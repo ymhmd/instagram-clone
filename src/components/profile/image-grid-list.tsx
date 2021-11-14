@@ -1,12 +1,12 @@
-import React from 'react';
+import React from "react";
 import {
   Image,
   Dimensions,
   StyleSheet,
   TouchableOpacity,
   FlatList,
-} from 'react-native';
-import {UserPostInfo} from '../../redux/posts';
+} from "react-native";
+import { UserPostInfo } from "../../redux/posts";
 
 const styles = StyleSheet.create({
   mainContainer: {
@@ -21,10 +21,10 @@ type ImageItemProps = {
 };
 
 const ImageItem = (
-  {item}: ImageItemProps,
-  onClickImage: (id: string) => void,
+  { item }: ImageItemProps,
+  onClickImage: (id: string) => void
 ) => {
-  const screenWidth = Dimensions.get('window').width;
+  const screenWidth = Dimensions.get("window").width;
   const imageSize = (screenWidth - 20) / 3;
 
   return (
@@ -32,9 +32,10 @@ const ImageItem = (
       key={item._id}
       onPress={() => {
         onClickImage(item._id);
-      }}>
+      }}
+    >
       <Image
-        style={{height: imageSize, width: imageSize}}
+        style={{ height: imageSize, width: imageSize }}
         source={{
           uri: item.imageUri,
         }}
@@ -56,9 +57,10 @@ export const ImageGridListComponent = ({
     <FlatList
       style={styles.mainContainer}
       data={imageListData}
-      renderItem={item => ImageItem(item, onClickImage)}
+      renderItem={(item) => ImageItem(item, onClickImage)}
       numColumns={3}
       scrollEnabled={false}
+      keyExtractor={(item) => item._id}
     />
   );
 };

@@ -31,9 +31,7 @@ export const useUploadImage = () => {
 
   const selecImage = async () => {
     let image = await ImagePicker.launchImageLibraryAsync({
-      mediaTypes: ImagePicker.MediaTypeOptions.All,
-      //allowsEditing: true,
-      aspect: [4, 3],
+      mediaTypes: ImagePicker.MediaTypeOptions.Images,
       quality: 1,
     });
 

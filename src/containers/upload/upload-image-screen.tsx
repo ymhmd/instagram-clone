@@ -1,10 +1,9 @@
-import React, {useState} from 'react';
-import {useDispatch, useSelector} from 'react-redux';
-import {UploadImageComponent} from '../../components/upload';
-import {useUploadImage} from '../../hooks/useUploadImage';
-import {userInfoRequest, userInfoSelector} from '../../redux/user';
-
-import {useNavigation, useRoute} from '@react-navigation/native';
+import React, { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { UploadImageComponent } from "../../components/upload";
+import { useUploadImage } from "../../hooks/useUploadImage";
+import { userInfoRequest, userInfoSelector } from "../../redux/user";
+import { useNavigation, useRoute } from "@react-navigation/native";
 
 export const UploadImage = () => {
   const dispatch = useDispatch();
@@ -13,17 +12,17 @@ export const UploadImage = () => {
 
   const userId = useSelector(userInfoSelector).id;
 
-  const {uploadImage} = useUploadImage();
+  const { uploadImage } = useUploadImage();
 
-  const [captionText, setCaptionText] = useState<string>('');
+  const [captionText, setCaptionText] = useState<string>("");
 
-  const {imageToUpload} = route.params;
+  const { imageToUpload } = route.params;
 
   const handleOnClickPost = () => {
     uploadImage(imageToUpload, captionText, userId);
 
     dispatch(userInfoRequest());
-    navigation.navigate('Home');
+    navigation.navigate("Home");
   };
 
   return (

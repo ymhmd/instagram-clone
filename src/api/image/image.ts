@@ -13,20 +13,21 @@ export const uploadImageToThirdParty = async (
   caption: string
 ) => {
   const data = new FormData();
-  data.append("photo", fileToUpload);
+  const fileName = fileToUpload.uri.split("/").pop();
+  let match = /\.(\w+)$/.exec(fileName);
+  let type = match ? `image/${match[1]}` : `image`;
+
+  data.append("photo", {
+    uri: fileToUpload.uri,
+    name: fileName,
+    type: type,
+  });
   data.append("userId", userId);
   if (caption) {
     data.append("caption", caption);
   }
 
-  console.log("data", data);
-
-  try {
-    const x = await client.post("/posts", data, {
-      headers: { "Content-Type": "multipart/form-data" },
-    });
-    console.log("XXXXXXX", x);
-  } catch (error) {
-    console.log("FSGFSHG", error);
-  }
+  await client.post("/posts", data, {
+    headers: { "Content-Type": "multipart/form-data" },
+  });
 };
