@@ -1,13 +1,23 @@
-import React from "react";
-import DocumentPicker, {
-  DocumentPickerResponse,
-} from "react-native-document-picker";
-
+import React, { useEffect } from "react";
+import * as ImagePicker from "expo-image-picker";
 import { uploadImageToThirdParty } from "../api/image";
+import { Alert, Platform } from "react-native";
 
 export const useUploadImage = () => {
+  useEffect(() => {
+    (async () => {
+      if (Platform.OS !== "web") {
+        const { status } =
+          await ImagePicker.requestMediaLibraryPermissionsAsync();
+        if (status !== "granted") {
+          Alert("Sorry, we need camera roll permissions to make this work!");
+        }
+      }
+    })();
+  }, []);
+
   const uploadImage = async (
-    fileToUpload: DocumentPickerResponse,
+    fileToUpload: any,
     caption: string,
     userId: string
   ) => {
@@ -20,19 +30,18 @@ export const useUploadImage = () => {
   };
 
   const selecImage = async () => {
-    try {
-      const res = await DocumentPicker.pick({
-        type: [DocumentPicker.types.images],
-      });
+    let image = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.All,
+      //allowsEditing: true,
+      aspect: [4, 3],
+      quality: 1,
+    });
 
-      console.log("res", res);
-      return res[0];
-    } catch (err) {
-      if (DocumentPicker.isCancel(err)) {
-        return false;
-      }
-      console.log("insidecatch");
+    if (!image.cancelled) {
+      return image;
     }
+
+    return false;
   };
 
   return {

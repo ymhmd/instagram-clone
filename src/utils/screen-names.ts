@@ -5,4 +5,5 @@ export const ScreenNames = {
   postLikeListScreen: "PostLikeListScreen",
   liveCamera: "LiveCamera",
   cameraPreview: "CameraPreview",
+  uploadImage: "UploadImage",
 };

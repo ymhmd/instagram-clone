@@ -32,7 +32,7 @@ const ProfileStack = () => {
         component={Profile}
       />
       <ProfileStackNavigator.Screen
-        name="UploadImage"
+        name={ScreenNames.uploadImage}
         component={UploadImage}
         options={{
           headerTitle: "Upload Image",

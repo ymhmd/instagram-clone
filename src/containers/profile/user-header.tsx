@@ -2,6 +2,7 @@ import React from "react";
 import { UserHeaderComponent } from "../../components/profile/user-header";
 import { useUploadImage } from "../../hooks/useUploadImage";
 import { useNavigation } from "@react-navigation/native";
+import { ScreenNames } from "../../utils";
 
 type Props = {
   profileHandle: string;
@@ -19,7 +20,7 @@ export const UserHeader = ({ profileHandle, isMyProfile }: Props) => {
     console.log("image", image);
 
     if (image) {
-      navigation.navigate("UploadImage", {
+      navigation.navigate(ScreenNames.uploadImage, {
         imageToUpload: image,
       });
     }
