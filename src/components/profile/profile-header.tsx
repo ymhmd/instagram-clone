@@ -1,5 +1,5 @@
-import React from 'react';
-import {Image, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
+import React from "react";
+import { Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 
 type HeaderBlockProps = {
   metricNumber?: number;
@@ -9,8 +9,8 @@ type HeaderBlockProps = {
 
 const styles = StyleSheet.create({
   mainContainer: {
-    flexDirection: 'row',
-    justifyContent: 'space-around',
+    flexDirection: "row",
+    justifyContent: "space-around",
     margin: 10,
   },
   profilePicture: {
@@ -19,17 +19,17 @@ const styles = StyleSheet.create({
     borderRadius: 50,
   },
   metricContainer: {
-    alignSelf: 'center',
+    alignSelf: "center",
   },
   metricNumber: {
-    color: 'black',
-    fontWeight: 'bold',
-    alignSelf: 'center',
+    color: "black",
+    fontWeight: "bold",
+    alignSelf: "center",
     fontSize: 20,
   },
   metricText: {
-    color: 'black',
-    alignSelf: 'center',
+    color: "black",
+    alignSelf: "center",
   },
 });
 
@@ -67,7 +67,17 @@ export const ProfileHeaderComponent = ({
 }: Props) => {
   return (
     <View style={styles.mainContainer}>
-      <Image style={styles.profilePicture} source={{uri: profilePictureUri}} />
+      {profilePictureUri ? (
+        <Image
+          style={styles.profilePicture}
+          source={{ uri: profilePictureUri }}
+        />
+      ) : (
+        <Image
+          style={styles.profilePicture}
+          source={require("../../images/profile-pic-placeholder.png")}
+        />
+      )}
       <HeaderBlock
         metricText="Posts"
         metricNumber={numberOfPosts}
