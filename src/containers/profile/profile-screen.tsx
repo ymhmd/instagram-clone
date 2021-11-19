@@ -60,7 +60,7 @@ export const Profile = () => {
   return isLoading ? (
     <Loader />
   ) : (
-    <SafeAreaView>
+    <SafeAreaView edges={["top", "left", "right"]}>
       <ScrollView
         nestedScrollEnabled={true}
         refreshControl={

@@ -19,7 +19,6 @@ type AllUserInfo = {
 };
 
 export const VisitingProfileScreen = () => {
-  const navigation = useNavigation();
   const route = useRoute();
   const { prettifyUserHandle } = usePrettifyUserHandle();
 
@@ -49,28 +48,26 @@ export const VisitingProfileScreen = () => {
   return !userInfo ? (
     <Loader />
   ) : (
-    <SafeAreaView>
-      <ScrollView nestedScrollEnabled={true}>
-        <UserHeader profileHandle={userInfo.handle} isMyProfile={false} />
+    <ScrollView nestedScrollEnabled={true}>
+      <UserHeader profileHandle={userInfo.handle} isMyProfile={false} />
 
-        <ProfileHeaderComponent
-          onClickFollowers={handleOnClick}
-          onClickPosts={handleOnClick}
-          onClickFollowing={handleOnClick}
-          numberOfPosts={userInfo.numberOfPosts}
-          numberOfFollowers={userInfo.numberOfFollowers}
-          numberOfFollowing={userInfo.numberOfFollowing}
-          profilePictureUri={userInfo.profilePictureUri}
-        />
+      <ProfileHeaderComponent
+        onClickFollowers={handleOnClick}
+        onClickPosts={handleOnClick}
+        onClickFollowing={handleOnClick}
+        numberOfPosts={userInfo.numberOfPosts}
+        numberOfFollowers={userInfo.numberOfFollowers}
+        numberOfFollowing={userInfo.numberOfFollowing}
+        profilePictureUri={userInfo.profilePictureUri}
+      />
 
-        <UserDetailsComponent
-          userName={userInfo.name}
-          userHandle={prettifyUserHandle(userInfo.handle)}
-          userAbout={userInfo.about}
-        />
+      <UserDetailsComponent
+        userName={userInfo.name}
+        userHandle={prettifyUserHandle(userInfo.handle)}
+        userAbout={userInfo.about}
+      />
 
-        <ImageGridList posts={posts} isLoading={false} />
-      </ScrollView>
-    </SafeAreaView>
+      <ImageGridList posts={posts} isLoading={false} />
+    </ScrollView>
   );
 };

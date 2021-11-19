@@ -121,11 +121,13 @@ export const PostHeadrComponent = ({
   };
 
   const handleDoubleTap = () => {
-    const now = Date.now();
-    if (previousTap && now - previousTap < DOUBLE_PRESS_DELAY) {
-      likeDislike();
-    } else {
-      previousTap = now;
+    if (!isLiked) {
+      const now = Date.now();
+      if (previousTap && now - previousTap < DOUBLE_PRESS_DELAY) {
+        likeDislike();
+      } else {
+        previousTap = now;
+      }
     }
   };
 

@@ -26,7 +26,7 @@ export const CameraPreview = () => {
   };
 
   return (
-    <SafeAreaView>
+    <SafeAreaView edges={["top", "left", "right"]}>
       <Image
         style={{
           width: "100%",

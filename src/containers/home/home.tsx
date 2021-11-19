@@ -45,7 +45,7 @@ export const Home = () => {
   };
 
   return userInfo && homePosts && homePosts.length ? (
-    <SafeAreaView>
+    <SafeAreaView edges={["top", "left", "right"]}>
       <ScrollView
         refreshControl={
           <RefreshControl refreshing={refreshing} onRefresh={handleOnRefresh} />

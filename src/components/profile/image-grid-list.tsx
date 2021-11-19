@@ -35,7 +35,7 @@ const ImageItem = (
       }}
     >
       <Image
-        style={{ height: imageSize, width: imageSize }}
+        style={{ height: imageSize, width: imageSize, margin: 1 }}
         source={{
           uri: item.imageUri,
         }}
